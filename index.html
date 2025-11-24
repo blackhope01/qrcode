@@ -142,6 +142,13 @@
         }
     </style>
 
-    <script src="script.js"></script>
+    <!--<script src="script.js"></script>-->
+    <script>
+  // Güncel zaman damgası ekleyerek cache'i devre dışı bırakır
+  const version = Date.now();
+  const script = document.createElement("script");
+  script.src = "script.js?v=" + version;
+  document.body.appendChild(script);
+    </script>
 </body>
 </html>
