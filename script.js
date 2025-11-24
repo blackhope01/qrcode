@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // 7. Kapatmalar (Model Kontrolü Kapatmaları)
         if (modelKontrolAktif) {
             icFormül += `)`; 
-            icFormül += `; "❌ FARKLI MODEL_ ❌")`; 
+            icFormül += `; "❌ FARKLI MODEL ❌")`; 
         }
 
         // Ana formüle iç formülü ekle
