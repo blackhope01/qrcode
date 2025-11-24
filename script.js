@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
         
         // 5. Palet Dolum Kontrolü veya Başarılı (✓)
         if (paletKontrolAktif) {
-            icFormül += `EĞER(MOD(SATIR(${aralik});${paletSayi})=0;"PALET DOLDU";"✓"); `;
+            icFormül += `EĞER(MOD(SATIR(${aralik});${paletSayi})=0;"PALET DOLDU (" & TAMSAYI(SATIR(A1:A1000)/9) & ")";"✓"); `;
         } else {
             icFormül += `"✓"; `; 
         }
