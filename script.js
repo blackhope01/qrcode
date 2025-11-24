@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         
         // 6. Zaten Okutuldu
-        icFormül += `"❌ ZATEN OKUTULDU_ ❌")`; 
+        icFormül += `"❌ ZATEN OKUTULDU ❌")`; 
         
         // 7. Kapatmalar (Model Kontrolü Kapatmaları)
         if (modelKontrolAktif) {
