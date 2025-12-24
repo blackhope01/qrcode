@@ -1,156 +1,116 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dinamik Formül QR Kod Üreteci</title>
     <meta name="description" content="Barkod kontrol formülünü dinamik olarak ayarlayın ve QR kodunu oluşturun.">
-
     <script src="https://cdn.tailwindcss.com"></script>
-    <!--
-    <script>
-  // Güncel zaman damgası ekleyerek cache'i devre dışı bırakır
-  const version = Date.now();
-  const script = document.createElement("script");
-  script.src = "script.js?v=" + version;
-  document.body.appendChild(script);
-    </script>
-    -->
-    
-    <script src="script.js?v=5"></script>
-        
-    </head>
+    <style>
+        .toggle-bg { background-color: #6b7280; transition: background-color 0.3s; }
+        #palet-toggle:checked + .toggle-bg, #model-kontrol-toggle:checked + .toggle-bg { background-color: #3b82f6; }
+        .toggle-dot { transition: transform 0.3s; }
+        #palet-toggle:checked + .toggle-bg .toggle-dot, #model-kontrol-toggle:checked + .toggle-bg .toggle-dot { transform: translateX(100%); }
+        input:disabled { opacity: 0.5; cursor: not-allowed; }
+    </style>
+</head>
 <body class="p-6 max-w-md mx-auto bg-zinc-900 text-white text-center min-h-screen flex flex-col justify-between">
 
     <main>
         <h1 class="text-3xl font-bold mb-2">Formül Ayar Paneli</h1>
-        <p class="mb-6">QR kodu oluşturmak için formül ayarlarını yapın.</p>
+        <p class="mb-6 text-zinc-400 text-sm">Barkod kontrolü için dinamik Excel formülü oluşturun.</p>
 
         <form id="form" class="mb-6">
-            <input type="number" id="barkod-bitis-satiri" value="750" min="1"
-                class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 mb-4"
-                spellcheck="false" placeholder="Barkod Bitiş Satırı (Örn: 750)" required>
-            
-            <input type="text" id="model-kontrol-hucre" value="A$1"
-                class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 mb-4"
-                spellcheck="false" placeholder="Model Kontrol Hücresi (Örn: A$1 | ESA1512A100)" required>
+            <div class="mb-4 text-left">
+                <label class="text-xs text-blue-400 ml-1">Barkod Bitiş Satırı</label>
+                <input type="number" id="barkod-bitis-satiri" value="750" min="1"
+                    class="block py-2 px-2 w-full text-sm bg-zinc-800 border-b-2 border-gray-600 focus:outline-none focus:border-blue-600 rounded-t-md">
+            </div>
+
+            <div class="mb-4 text-left">
+                <label class="text-xs text-blue-400 ml-1">Barkod Uzunluk Kontrolü (Karakter)</label>
+                <input type="number" id="uzunluk-input" value="18" min="1"
+                    class="block py-2 px-2 w-full text-sm bg-zinc-800 border-b-2 border-gray-600 focus:outline-none focus:border-blue-600 rounded-t-md">
+            </div>
+
+            <hr class="border-zinc-700 my-6">
+
+            <div class="flex items-center justify-between mb-4">
+                <span class="font-medium">Model Kontrolü</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="model-kontrol-toggle" class="hidden" checked>
+                    <div class="toggle-bg w-12 h-6 rounded-full p-1 relative">
+                        <div class="toggle-dot w-4 h-4 bg-white rounded-full shadow-md absolute left-1 top-1"></div>
+                    </div>
+                </label>
+            </div>
+
+            <div id="model-ayarlar-grubu" class="space-y-4 mb-6 transition-opacity">
+                <div class="text-left">
+                    <label class="text-xs text-gray-400 ml-1">Referans Model Hücresi</label>
+                    <input type="text" id="model-kontrol-hucre" value="A$1"
+                        class="block py-2 px-2 w-full text-sm bg-zinc-800 border-b-2 border-gray-600 focus:outline-none focus:border-blue-600 rounded-t-md">
+                </div>
+                
+                <div class="flex gap-4">
+                    <div class="flex-1 text-left">
+                        <label class="text-xs text-gray-400 ml-1">Aranacak Başlangıç</label>
+                        <input type="number" id="model-baslangic" value="1" min="1"
+                            class="block py-2 px-2 w-full text-sm bg-zinc-800 border-b-2 border-gray-600 focus:outline-none focus:border-blue-600 rounded-t-md">
+                    </div>
+                    <div class="flex-1 text-left">
+                        <label class="text-xs text-gray-400 ml-1">Karakter Sayısı</label>
+                        <input type="number" id="model-uzunluk" value="10" min="1"
+                            class="block py-2 px-2 w-full text-sm bg-zinc-800 border-b-2 border-gray-600 focus:outline-none focus:border-blue-600 rounded-t-md">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between mb-4">
+                <span class="font-medium">Palet Dolum Kontrolü</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="palet-toggle" class="hidden" checked>
+                    <div class="toggle-bg w-12 h-6 rounded-full p-1 relative">
+                        <div class="toggle-dot w-4 h-4 bg-white rounded-full shadow-md absolute left-1 top-1"></div>
+                    </div>
+                </label>
+            </div>
+
+            <div id="palet-sayi-ayari" class="text-left mb-6 transition-opacity">
+                <label class="text-xs text-gray-400 ml-1">Palet Boyutu (Adet)</label>
+                <input type="number" id="palet-sayi-input" value="10" min="1"
+                    class="block py-2 px-2 w-full text-sm bg-zinc-800 border-b-2 border-gray-600 focus:outline-none focus:border-blue-600 rounded-t-md">
+            </div>
 
             <button type="submit"
-                class="bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5">
-                QR Kodu Oluştur
+                class="bg-blue-600 hover:bg-blue-700 font-bold rounded-lg text-sm w-full px-5 py-3 transition-colors shadow-lg shadow-blue-900/20">
+                QR KODU OLUŞTUR
             </button>
         </form>
         
-        <div class="border-t border-zinc-700 pt-4 mt-6 text-left">
-            <h2 class="text-xl font-semibold mb-4">Dinamik Ayarlar</h2>
-
-            <div class="flex items-center justify-between mb-4">
-                <label for="model-kontrol-toggle" class="font-medium">Model Kontrolü:</label>
-                <input type="checkbox" id="model-kontrol-toggle" class="hidden" checked>
-                <div class="toggle-bg w-12 h-6 rounded-full relative cursor-pointer">
-                    <div class="toggle-dot w-6 h-6 bg-white rounded-full shadow-md absolute left-0 top-0 transition-all"></div>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between mb-4">
-                <label for="uzunluk-input" class="font-medium mr-3">Barkod Uzunluğu:</label>
-                <input type="number" id="uzunluk-input" value="18" min="1"
-                    class="w-1/4 p-1 text-center bg-zinc-800 border border-gray-600 rounded-md focus:border-blue-500 focus:ring-0">
-            </div>
-
-            <div class="flex items-center justify-between mb-4">
-                <label for="palet-toggle" class="font-medium">Palet Dolum Kontrolü (Mod):</label>
-                <input type="checkbox" id="palet-toggle" class="hidden" checked>
-                <div class="toggle-bg w-12 h-6 rounded-full relative cursor-pointer">
-                    <div class="toggle-dot w-6 h-6 bg-white rounded-full shadow-md absolute left-0 top-0 transition-all"></div>
-                </div>
-            </div>
-            
-            <div id="palet-sayi-ayari" class="flex items-center justify-between mb-4">
-                <label for="palet-sayi-input" class="font-medium mr-3">Palet Boyutu (Adet):</label>
-                <input type="number" id="palet-sayi-input" value="10" min="1"
-                    class="w-1/4 p-1 text-center bg-zinc-800 border border-gray-600 rounded-md focus:border-blue-500 focus:ring-0">
-            </div>
-
-        </div>
-
-        <div class="mt-8">
+        <div class="mt-8 border-t border-zinc-800 pt-6">
             <h2 class="text-xl font-semibold mb-2">Oluşturulan Formül</h2>
-            
             <div class="relative mb-4">
                 <div id="formül-gosterim" 
-                    class="p-3 pr-10 bg-zinc-800 text-sm overflow-auto max-h-40 text-left rounded-md whitespace-pre-wrap text-white">
-                    Formül yükleniyor...
+                    class="p-4 pr-12 bg-black text-xs font-mono overflow-auto max-h-40 text-left rounded-md whitespace-pre-wrap text-green-400 border border-zinc-700">
+                    Yükleniyor...
                 </div>
-
                 <button id="copy-button"
-                    class="absolute top-2 right-2 p-1 px-2 bg-zinc-700 hover:bg-zinc-600 text-white text-sm rounded-md transition-colors z-10"
-                    title="Formülü Kopyala">
-                    Kopyala 
+                    class="absolute top-2 right-2 p-1.5 bg-zinc-800 hover:bg-zinc-700 text-white text-[10px] uppercase font-bold rounded transition-colors">
+                    Kopyala
                 </button>
             </div>
-
-            <img id="qr-code" src="" class="border-8 border-white rounded-md mx-auto mt-6 hidden">
+            <img id="qr-code" src="" class="border-8 border-white rounded-md mx-auto mt-6 hidden shadow-2xl">
         </div>
-        
     </main>
 
-    <footer class="mt-6">
-        <p id="copyright-text" class="text-sm text-zinc-400">
-            &copy; 2025 <strong>Ferhat Erdoğan</strong> - Her hakkı saklıdır.
-        </p>
+    <footer class="mt-12 border-t border-zinc-800 pt-4">
+        <p id="copyright-text" class="text-xs text-zinc-500 font-medium"></p>
     </footer>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const currentYear = new Date().getFullYear();
-            const copyrightElement = document.getElementById('copyright-text');
-            
-            if (copyrightElement) {
-                copyrightElement.innerHTML = `&copy; ${currentYear} <strong>Ferhat Erdoğan</strong> - Her hakkı saklıdır.`;
-                copyrightElement.classList.remove('text-zinc-400');
-                copyrightElement.classList.add('font-medium');
-            }
-        });
-    </script>
 
-
-    <style>
-        .toggle-bg {
-            background-color: #3b82f6; 
-            transition: background-color 0.3s;
-        }
-        .toggle-bg:hover {
-            opacity: 0.8;
-        }
-        /* Toggle Açıkken */
-        #palet-toggle:checked + .toggle-bg, #model-kontrol-toggle:checked + .toggle-bg {
-            background-color: #3b82f6;
-        }
-        /* Toggle Kapalıyken */
-        #palet-toggle:not(:checked) + .toggle-bg, #model-kontrol-toggle:not(:checked) + .toggle-bg {
-            background-color: #6b7280; 
-        }
-        /* Dot Açıkken Konumu */
-        #palet-toggle:checked + .toggle-bg .toggle-dot, #model-kontrol-toggle:checked + .toggle-bg .toggle-dot {
-            transform: translateX(100%);
-            background-color: white; 
-        }
-        /* Dot Kapalıyken Konumu */
-        #palet-toggle:not(:checked) + .toggle-bg .toggle-dot, #model-kontrol-toggle:not(:checked) + .toggle-bg .toggle-dot {
-            transform: translateX(0);
-        }
-        .toggle-dot {
-            transition: transform 0.3s;
-        }
-
-        /* Input Devre Dışı Bırakıldığında Görsel Geri Bildirim */
-        input[type="number"]:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            background-color: #374151; 
-        }
-    </style>
+    <script src="script.js?v=6"></script>
 </body>
 </html>
+
+                    
