@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // 3. Model Kontrolü ve EĞERHATA Bloğu
         if (modelKontrolAktif) {
             icFormül += `EĞERHATA(`;
-            icFormül += `EĞER(BUL(PARÇAAL(${modelHucre}; 1; 12); ${aralik}); `;
+            icFormül += `EĞER(BUL(PARÇAAL(${modelHucre}; 1; 10); ${aralik}); `;
         }
         
         // 4. Tekrar Kontrolü (KAÇINCI)
