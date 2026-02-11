@@ -6,5 +6,5 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(clients.claim()); // Hemen kontrolü ele al
 });
 
-// v1
+// v2
 
