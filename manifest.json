@@ -1,6 +1,6 @@
 {
   "name": "Excel Formül Model Kontrolü",
-  "short_name": "fxQR",
+  "short_name": "fxQR1",
   "start_url": "/qrcode/",
   "display": "standalone",
   "background_color": "#ffffff",
