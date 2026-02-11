@@ -1,12 +1,21 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+    <link rel="manifest" href="manifest.json">
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+  }
+</script>
+    
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dinamik Formül QR Kod Üreteci</title>
     <meta name="description" content="Barkod kontrol formülünü dinamik olarak ayarlayın ve QR kodunu oluşturun.">
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <style>
         .toggle-bg { background-color: #6b7280; transition: background-color 0.3s; }
         #palet-toggle:checked + .toggle-bg, #model-kontrol-toggle:checked + .toggle-bg { background-color: #3b82f6; }
